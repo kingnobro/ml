@@ -1,60 +1,26 @@
-### Training Loss
+### 1. 特征选择
 
-| Baseline | Score  |
-| :------: | :----: |
-|  Simple  | 1.6972 |
-|  Medium  |        |
-|  Strong  |        |
-|   Boss   |        |
-
-
-
-### 1. Feature Selection
-
-|                 Feature                  |   Score    |
-| :--------------------------------------: | :--------: |
-|               All Features               |   1.6972   |
-| id + state + features of the last 3 days |   1.3736   |
-|   state + features of the last 3 days    |   1.0804   |
-| **state + features of the last 2 days**  | **0.9552** |
-|     state + features of the last day     |   4.6312   |
-|       features of the last 2 days        |   0.9783   |
-
-
-
-### 2. Different Model Architectures and Optimizers
-
-|   Optimizer    | Score  |
-| :------------: | :----: |
-|      SGD       | 0.9552 |
-| Adam (lr=1e-3) | 0.9581 |
+使用 Pearson 相关系数选择出系数值大于 0.8 的特征（大约为 24 个）
 
 ```python
-# Architecture, Score = 0.9462
-self.layers = nn.Sequential(
-    nn.Linear(input_dim, 32),
-    nn.ReLU(),
-    nn.Linear(32, 32),
-    nn.ReLU(),
-    nn.Linear(32, 16),
-    nn.ReLU(),
-    nn.Linear(16, 1)
-)
+train_data = pd.read_csv('./covid.train.csv')
+print(train_data.corr()['tested_positive'].sort_values(ascending=False).index)
 ```
 
 
 
-### 3. L2 Regularization and Try More Parameters
+### 2. 修改网络架构
 
-| Weight Decay | Score  |
-| :----------: | :----: |
-|     1e-4     | 0.9445 |
-|     1e-5     | 0.9449 |
-|     1e-6     | 0.9437 |
+将 `nn.ReLU()` 替换为 `nn.LeakyReLU()`；降低神经元的个数
 
-other parameters
-|     Parameters     | Value | Score  |
-| :----------------: | :---: | :----: |
-|        seed        |   7   | 0.7295 |
-| data normalization | none  | 0.7169 |
 
+
+### 3. 修改优化器
+
+换成 Adam，`weight_decay=1e-3`
+
+
+
+### 4. 增大训练集的占比
+
+训练集占比为 0.9
