@@ -1,3 +1,5 @@
+## BERT - QA
+
 - 使用 hfl/chinese-macbert-base，超过 1G 的模型显存不够用
 - 学习率线性下降
 - gradient accumulation，修改 batch size 为 8 × 8
