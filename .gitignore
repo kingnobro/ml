@@ -1,8 +1,24 @@
 .ipynb_checkpoints
+checkpoints
+saved_model
 
 models
 model.ckpt
 runs
 
 .DS_Store
+
 libriphone
+food11
+Dataset
+
+faces
+logs
+output
+*.tgz
+
+*.pt
+data
+
+real_or_drawing
+*.bin
